@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 
 const app = express();
+const todoAPI = require("./routes/api/todo");
 
 dotenv.config();
 const PORT = process.env.PORT || 3300;
@@ -12,5 +13,7 @@ app.get("/", (req, res) => {
     message: `You're forbidden to access this endpoint`,
   });
 });
+
+app.use("/api/todo", todoAPI);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
