@@ -7,7 +7,10 @@ dotenv.config();
 const PORT = process.env.PORT || 3300;
 
 app.get("/", (req, res) => {
-  res.send("Halo, anda sedang berada di endpoint root");
+  return res.status(403).json({
+    status: "error",
+    message: `You're forbidden to access this endpoint`,
+  });
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
