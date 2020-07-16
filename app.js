@@ -14,6 +14,9 @@ app.get("/", (req, res) => {
   });
 });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use("/api/todo", todoAPI);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
