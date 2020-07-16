@@ -51,7 +51,11 @@ router.post("/", (req, res) => {
 
     const { todo_id, task, done } = req.body;
 
-    if (!todo_id || !task || !done) {
+    if (
+      typeof todo_id === "undefined" ||
+      typeof task === "undefined" ||
+      typeof done === "undefined"
+    ) {
       return res.status(400).json({
         status: "error",
         message: "Please provide the required data",
