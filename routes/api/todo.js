@@ -84,4 +84,36 @@ router.post("/", (req, res) => {
   });
 });
 
+// Delete a todo
+router.delete("/", (req, res) => {
+  const { todo_id } = req.body;
+
+  if (typeof todo_id === "undefined") {
+    return res.status(400).json({
+      status: "error",
+      message: "Please provide the required todo !",
+    });
+  }
+
+  Todo.find({ todo_id: todo_id }, (err, data) => {
+    if (err) throw new Error(err);
+
+    if (!data.length) {
+      return res.status(400).json({
+        status: "error",
+        message: `The todo doesn't exist !`,
+      });
+    }
+
+    Todo.deleteOne({ todo_id: todo_id }, (err, data) => {
+      if (err) throw new Error(err);
+
+      res.json({
+        status: "ok",
+        message: "Todo deleted !",
+      });
+    });
+  });
+});
+
 module.exports = router;
