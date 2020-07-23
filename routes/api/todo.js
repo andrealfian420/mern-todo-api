@@ -84,6 +84,40 @@ router.post("/", (req, res) => {
   });
 });
 
+// Update done status todo
+router.patch("/", (req, res) => {
+  const { todo_id, done } = req.body;
+
+  if (typeof todo_id === "undefined" || typeof done === "undefined") {
+    return res.status(400).json({
+      status: "error",
+      message: "Please provide the required data !",
+    });
+  }
+
+  const newStatus = done === false ? true : false;
+
+  Todo.findOneAndUpdate(
+    { todo_id: todo_id },
+    { done: newStatus },
+    (err, data) => {
+      if (err) throw new Error(err);
+
+      if (!data) {
+        return res.status(400).json({
+          status: "error",
+          message: `The todo doesn't exist !`,
+        });
+      }
+
+      res.json({
+        status: "ok",
+        data,
+      });
+    }
+  );
+});
+
 // Delete a todo
 router.delete("/", (req, res) => {
   const { todo_id } = req.body;
@@ -107,6 +141,13 @@ router.delete("/", (req, res) => {
 
     Todo.deleteOne({ todo_id: todo_id }, (err, data) => {
       if (err) throw new Error(err);
+
+      if (!data) {
+        return res.status(400).json({
+          status: "error",
+          message: `The todo doesn't exist !`,
+        });
+      }
 
       res.json({
         status: "ok",
