@@ -11,6 +11,7 @@ dotenv.config();
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 
 // Test db connection
@@ -153,6 +154,18 @@ router.delete("/", (req, res) => {
         status: "ok",
         message: "Todo deleted !",
       });
+    });
+  });
+});
+
+// delete all completed todo
+router.delete("/completed", (req, res) => {
+  Todo.deleteMany({ done: true }, (err, data) => {
+    if (err) throw new Error(err);
+
+    res.json({
+      status: "ok",
+      data,
     });
   });
 });
